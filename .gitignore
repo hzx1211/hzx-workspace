@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+dist/
+*.db
+*.db-journal
+.env
+.env*.local
+!prisma/seed-data/
+# 大文件不进 git：安装/seed 时自动拉取
+app/fonts/*.woff2
+prisma/seed-data/*.json
