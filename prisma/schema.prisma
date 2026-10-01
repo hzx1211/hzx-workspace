@@ -74,3 +74,33 @@ model InboxItem {
   content   String
   createdAt DateTime @default(now())
 }
+
+// Trello 风格看板
+model Board {
+  id        String        @id @default(cuid())
+  name      String
+  color     String        @default("#8b5cf6")
+  createdAt DateTime      @default(now())
+  columns   BoardColumn[]
+}
+
+model BoardColumn {
+  id        String      @id @default(cuid())
+  name      String
+  order     Int         @default(0)
+  boardId   String
+  board     Board       @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     BoardCard[]
+  createdAt DateTime    @default(now())
+}
+
+model BoardCard {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  order       Int         @default(0)
+  columnId    String
+  column      BoardColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}

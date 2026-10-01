@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, CheckSquare, FolderKanban, Timer,
+  LayoutDashboard, CheckSquare, FolderKanban, SquareKanban, Timer,
   BookOpenText, NotebookPen, Inbox, Sparkles,
 } from "lucide-react";
 import CommandPalette from "./CommandPalette";
@@ -12,6 +12,7 @@ const NAV = [
   { href: "/", label: "总览", icon: LayoutDashboard },
   { href: "/tasks", label: "任务", icon: CheckSquare },
   { href: "/projects", label: "项目", icon: FolderKanban },
+  { href: "/boards", label: "看板", icon: SquareKanban },
   { href: "/pomodoro", label: "番茄钟", icon: Timer },
   { href: "/words", label: "背单词", icon: BookOpenText },
   { href: "/notes", label: "笔记", icon: NotebookPen },
