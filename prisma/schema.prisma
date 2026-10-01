@@ -1,0 +1,75 @@
+// hzx的工作台 — 数据模型
+// 本地开发用 SQLite；部署到 Vercel 时切换为 postgresql（见 README 部署章节）
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  color       String   @default("#8b5cf6")
+  description String?
+  createdAt   DateTime @default(now())
+  tasks       Task[]
+}
+
+model Task {
+  id        String    @id @default(cuid())
+  title     String
+  notes     String?
+  status    String    @default("todo") // todo | doing | done
+  priority  String    @default("medium") // high | medium | low
+  dueDate   DateTime?
+  projectId String?
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  pomodoros PomodoroSession[]
+}
+
+model PomodoroSession {
+  id          String   @id @default(cuid())
+  taskId      String?
+  task        Task?    @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  kind        String   @default("focus") // focus | short-break | long-break
+  minutes     Int      @default(25)
+  completedAt DateTime @default(now())
+}
+
+model Word {
+  id         String        @id @default(cuid())
+  word       String        @unique
+  level      String        // CET4 | CET6
+  definition String
+  progress   WordProgress?
+}
+
+model WordProgress {
+  id          String   @id @default(cuid())
+  wordId      String   @unique
+  word        Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  familiarity Int      @default(0) // 0 生词 | 1 模糊 | 2 认识
+  nextReview  DateTime @default(now())
+  reviews     Int      @default(0)
+  updatedAt   DateTime @updatedAt
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InboxItem {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+}
