@@ -52,9 +52,8 @@ npm run dev               # http://localhost:3000
 Vercel 的文件系统是临时的，SQLite 不适合生产。本项目默认使用 PostgreSQL（生产用 [Neon](https://neon.tech) 免费版即可）：
 
 1. 在 Neon 创建项目，把 pooled 连接串（带 `?sslmode=require`）填入 Vercel 项目的 `DATABASE_URL` 环境变量
-2. `DATABASE_URL="<生产连接串>" npx prisma db push`（建表）
-3. `DATABASE_URL="<生产连接串>" npx tsx prisma/seed.ts`（灌入 6662 四六级词库）
-4. 连接 GitHub 仓库后导入 Vercel 部署即可（构建命令已含 `prisma generate`）
+2. 连接 GitHub 仓库后导入 Vercel 部署即可 —— 构建时会自动 `prisma db push` 建表，
+   词库为空时自动灌入 6662 四六级单词（`scripts/vercel-init.mjs`，幂等，不会覆盖背单词进度）
 
 ## 📖 词库来源
 
